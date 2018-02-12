@@ -30,11 +30,12 @@ begin
 		clk_9600 <= 1'b0;
 	end
 	else begin
-		tim_tmp <= tim_tmp + 12'b1;
-		
 		if(tim_tmp ==  `FRE_9600_TOGGLE) begin
 			tim_tmp <= 0;
 			clk_9600 <= ~clk_9600;
+		end
+		else begin
+			tim_tmp <= tim_tmp + 12'b1;
 		end
 	end
 end
