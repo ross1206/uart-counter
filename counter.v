@@ -1,127 +1,64 @@
-//	setup file time 2018/2/9
+//	setup file time 2018/2/12
 //	author <ross1206vii@gmail.com>
-
-// I think I have to use the state-mechine 
-// to detect the positive-edge of input signal
-
-
-`define DETECT1_ST 	3'b000		//because I did not use the reset signal, so this state never exists
-`define DETECT2_ST	3'b001
-`define COMPARE_ST	3'b010
-`define LOCK_ST		3'b011
-
 
 
 
 
 module counter
 (
+	input reset,
 	input clk_in,
-	input sig_in,
 	input tim025,
+	input sig_in,
 	
-	output [7:0] data_out		//the max frequency of input signal is 1000HZ
+	output reg [7:0] data_out
 );
 
 
-reg [2:0] current_state;
-reg [2:0] next_state;
-
-reg first_result;
-reg second_result;
-
 reg [7:0] counter;
+reg q1, q2;
+reg res;
 
 
-// this always will describe the function due to current state
-always @(posedge clk_in)
+
+always @(posedge clk_in or negedge reset)
 begin
-
-	case(current_state)
-		`DETECT1_ST: begin
-			first_result <= sig_in;
-		end
-		
-		`DETECT2_ST: begin
-			second_result <= sig_in;
-		end
-		
-		`COMPARE_ST: begin
-			if((first_result == 1'b0) && (second_result == 1'b1)) begin	//means posedge of sig_in
-				if(counter == 250) begin	// protect [8:0] overflow
-					counter <= 250;
-				end
-				else begin 
-					counter <= counter + 1;
-				end
-			end
-		end
-		
-		`LOCK_ST: begin
-			first_result <= 1'b0;
-			second_result <= 1'b0;
-			counter <= 8'b0;
-		end
-		
-		default:
-			;
-	endcase
+	if(reset == 1'b0) begin
+		q1 <= 1'b0;
+		q2 <= 1'b0;
+	end
+	else begin
+		q1 <= sig_in;
+		q2 <= q1;
+	end
 end
 
 
-assign data_out = counter; 
 
-
-// this always determin the logic of next-state changing
 always @(*)
 begin
-	case(current_state)
-		`DETECT1_ST: begin	
-			if(tim025 == 1'b1) begin
-				next_state = `LOCK_ST;
-			end
-			else begin
-				next_state = `DETECT2_ST;
-			end
-		end
-		
-		`DETECT2_ST: begin	
-			if(tim025 == 1'b1) begin
-				next_state = `LOCK_ST;
-			end
-			else begin
-				next_state = `COMPARE_ST;
-			end
-		end
-		
-		`COMPARE_ST: begin	
-			if(tim025 == 1'b1) begin
-				next_state = `LOCK_ST;
-			end
-			else begin
-				next_state = `DETECT1_ST;
-			end
-		end
-		
-		`LOCK_ST: begin	
-			next_state = `DETECT1_ST;
-		end
-		
-		default: begin	
-			;
-		end
-	endcase
+	res <= q1 ^ q2;
 end
 
 
-
-// this always update next-state to current state
-always @(posedge clk_in)
-begin 
-	current_state <= next_state;
+always @(posedge clk_in or negedge reset)
+begin
+	if(reset == 1'b0) begin
+		counter <= 8'b0;
+		data_out <= 8'b0;
+	end
+	else begin
+		if(tim025 == 1'b0) begin		// means it is now in period of 0.25s
+			if(res == 1'b1) begin
+				counter <= counter + 8'b1;
+			end
+		end
+		else begin
+			data_out <= counter;
+			counter <= 8'b0;
+		end
+	end
 end
-
-
 
 endmodule
 
