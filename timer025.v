@@ -5,22 +5,36 @@
 
 module timer025
 (
-	clk_in,
-	out_025s
+	input reset,
+	input clk_in,
+	
+	output reg out_025s
 );
 
-parameter FRQ = 500000;
-
-input clk_in;
-output out_025s;
+parameter FRQ = 2400;
 
 
-reg[19:0] temp;
+
+
+reg[11:0] tmp;
 
 // always start
-always @(posedge clk_in)
+always @(posedge clk_in or negedge reset)
 begin
-	temp <= temp + 1;
+	if(reset == 1'b0) begin
+		tmp <= 12'b0;
+		out_025s <= 1'b0;
+	end
+	else begin
+		if(tmp == FRQ) begin
+			tmp <= 12'b0;
+			out_025s <= 1'b1;
+		end
+		else begin
+			tmp <= tmp + 1;
+			out_025s <= 1'b0;
+		end
+	end
 end
 // always end
 
