@@ -10,28 +10,35 @@
 
 module freq9600
 (
+	input reset,
 	input clk_in,
-	output clk_9600
+	
+	output reg clk_9600
 );
 
 
-parameter FREQUENCY = `FRE_9600_TOGGLE;
+
 
 reg [11:0] tim_tmp;
-reg fre9600_tmp;
 
 
-always @(posedge clk_in)
+
+always @(posedge clk_in or negedge reset)
 begin
-	tim_tmp <= tim_tmp + 1;
-	
-	if(tim_tmp ==  FREQUENCY) begin
-		tim_tmp <= 0;
-		fre9600_tmp <= ~fre9600_tmp;
+	if(reset == 1'b0) begin		// means to reset
+		tim_tmp <= 12'b0;
+		clk_9600 <= 1'b0;
+	end
+	else begin
+		tim_tmp <= tim_tmp + 12'b1;
+		
+		if(tim_tmp ==  `FRE_9600_TOGGLE) begin
+			tim_tmp <= 0;
+			clk_9600 <= ~clk_9600;
+		end
 	end
 end
 
-assign clk_9600 = fre9600_tmp;
 
 
 endmodule
