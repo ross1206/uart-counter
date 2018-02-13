@@ -4,6 +4,7 @@
 
 module top
 (
+	input reset,
 	input clk_in,
 	input [15:0] sig_in,
 	output out1
@@ -15,9 +16,10 @@ wire sig_selected_wire;
 
 
 
-freq9600	f9600(.clk_in(clk_in), .clk_9600(fre9600_wire));
-timer025 	t25(.clk_in(fre9600_wire), .out_025s(time025_wire));
-select_16 	s16(.in(sig_in), .time_025(time025_wire), .out(sig_selected_wire));
+freq9600	f9600(.reset(reset), .clk_in(clk_in), .clk_9600(fre9600_wire));
+timer025 	t25(.reset(reset), .clk_in(fre9600_wire), .out_025s(time025_wire));
+select_16 	s16(.reset(reset), .in(sig_in), .time_025(time025_wire), .out(sig_selected_wire));
+counter		ct1(.reset(reset), .clk_in(clk_in), .tim025(time025_wire), .sig_in(sig_selected_wire));
 
 endmodule
 
