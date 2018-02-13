@@ -7,15 +7,16 @@ module select_16
 (
 	input reset,
 	input clk_in,
-	input [15:0] in,		//16 inputs
+	input [16:1] in,		//16 inputs
 	input time_025,			//this is a pulse signal, every 0.25s it will experience a period of level'1'
 	
+	output reg start,
 	output reg out			//this must be 'output reg' so it can be assigned in 'always'-block
 );
 
 
 
-reg [3:0] addr;
+reg [4:0] addr;
 reg q1, q2;
 reg res;
 
@@ -55,7 +56,7 @@ begin
 	end
 	else begin
 		if(res == 1'b1) begin
-			if(addr == 2'd15)	begin
+			if(addr == 2'd16)	begin
 				addr <= 2'd0;
 			end
 			else begin
@@ -67,12 +68,23 @@ end
 
 
 
+always @(*)
+begin
+	if(addr == 2'd00) begin
+		start = 1'b1;
+	end
+	else begin
+		start = 1'b0;
+	end
+end
+
+
 
 always @(*)
 begin
 	case(addr)
 		2'd00: 
-			out = in[0];
+			out = 1'bx;
 		2'd01:
 			out = in[1];
 		2'd02: 
@@ -103,6 +115,8 @@ begin
 			out = in[14];
 		2'd15:
 			out = in[15];
+		2'd16:
+			out = in[16];
 		default: 
 			out = 1'bx;
 	endcase
