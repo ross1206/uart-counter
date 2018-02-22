@@ -50,7 +50,8 @@ begin
 			end
 			`SHIFT_ST:
 			begin
-				data_out <= data_reg[0];
+				data_out <= data_start;
+				data_start <= data_reg[0];
 				data_reg[0] <= data_reg[1];
 				data_reg[1] <= data_reg[2];
 				data_reg[2] <= data_reg[3];
