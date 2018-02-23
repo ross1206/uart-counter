@@ -3,10 +3,10 @@
 
 
 
-`define IDLE_ST		3'b000
-`define LOCK_ST		3'b001
-`define SHIFT_ST	3'b010
-`define CLEAR_ST	3'b011
+`define US_IDLE_ST		3'b000
+`define US_LOCK_ST		3'b001
+`define US_SHIFT_ST	3'b010
+`define US_CLEAR_ST	3'b011
 
 
 
@@ -36,19 +36,19 @@ begin
 	end
 	else begin
 		case(current_st)
-			`IDLE_ST:
+			`US_IDLE_ST:
 			begin
 				data_start <= 1'b0;
 				data_end <= 1'b1;
 				shift_count <= 4'b0;
 			end
-			`LOCK_ST:
+			`US_LOCK_ST:
 			begin
 				data_start <= 1'b0;
 				data_end <= 1'b1;
 				data_reg <= data_in;
 			end
-			`SHIFT_ST:
+			`US_SHIFT_ST:
 			begin
 				data_out <= data_start;
 				data_start <= data_reg[0];
@@ -62,7 +62,7 @@ begin
 				data_reg[7] <= data_end;
 				shift_count <= shift_count + 4'b1;
 			end
-			`CLEAR_ST:
+			`US_CLEAR_ST:
 				;
 			default:
 				;
@@ -75,31 +75,31 @@ end
 always @(*)
 begin
 	case(current_st)
-		`IDLE_ST:
+		`US_IDLE_ST:
 		begin
 			if(time025 == 1'b1) begin	// means should lock data from pins
-				next_st = `LOCK_ST;
+				next_st = `US_LOCK_ST;
 			end
 			else begin
-				next_st = `IDLE_ST;
+				next_st = `US_IDLE_ST;
 			end
 		end
-		`LOCK_ST:
+		`US_LOCK_ST:
 		begin
-			next_st = `SHIFT_ST;
+			next_st = `US_SHIFT_ST;
 		end
-		`SHIFT_ST:
+		`US_SHIFT_ST:
 		begin
 			if(shift_count == 4'd10) begin	// means has shifted 8 bits out
-				next_st = `CLEAR_ST;
+				next_st = `US_CLEAR_ST;
 			end
 			else begin
-				next_st = `SHIFT_ST;		// or keep going on
+				next_st = `US_SHIFT_ST;		// or keep going on
 			end		
 		end
-		`CLEAR_ST:
+		`US_CLEAR_ST:
 		begin
-			next_st = `IDLE_ST;
+			next_st = `US_IDLE_ST;
 		end
 		default:
 			;
@@ -111,7 +111,7 @@ end
 always @(posedge clk_in or negedge reset)
 begin
 	if(reset == 1'b0) begin
-		current_st <= `IDLE_ST;
+		current_st <= `US_IDLE_ST;
 	end
 	else begin
 		current_st <= next_st;
