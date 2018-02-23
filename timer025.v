@@ -31,7 +31,7 @@ begin
 			out_025s <= 1'b1;
 		end
 		else begin
-			tmp <= tmp + 1;
+			tmp <= tmp + 12'b1;
 			out_025s <= 1'b0;
 		end
 	end

@@ -56,11 +56,11 @@ begin
 	end
 	else begin
 		if(res == 1'b1) begin
-			if(addr == 2'd16)	begin
-				addr <= 2'd0;
+			if(addr == 5'd16)	begin
+				addr <= 5'd0;
 			end
 			else begin
-				addr <= addr + 2'd1;
+				addr <= addr + 5'd1;
 			end
 		end
 	end
@@ -83,39 +83,39 @@ end
 always @(*)
 begin
 	case(addr)
-		2'd00: 
+		5'd00: 
 			out = 1'bx;
-		2'd01:
+		5'd01:
 			out = in[1];
-		2'd02: 
+		5'd02: 
 			out = in[2];
-		2'd03:
+		5'd03:
 			out = in[3];
-		2'd04: 
+		5'd04: 
 			out = in[4];
-		2'd05:
+		5'd05:
 			out = in[5];
-		2'd06: 
+		5'd06: 
 			out = in[6];
-		2'd07:
+		5'd07:
 			out = in[7];
-		2'd08: 
+		5'd08: 
 			out = in[8];
-		2'd09:
+		5'd09:
 			out = in[9];
-		2'd10: 
+		5'd10: 
 			out = in[10];
-		2'd11:
+		5'd11:
 			out = in[11];
-		2'd12: 
+		5'd12: 
 			out = in[12];
-		2'd13:
+		5'd13:
 			out = in[13];
-		2'd14: 
+		5'd14: 
 			out = in[14];
-		2'd15:
+		5'd15:
 			out = in[15];
-		2'd16:
+		5'd16:
 			out = in[16];
 		default: 
 			out = 1'bx;

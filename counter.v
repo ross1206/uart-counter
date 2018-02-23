@@ -50,8 +50,8 @@ begin
 	else begin
 		if(tim025 == 1'b0) begin		// means it is now in period of 0.25s
 			if(res == 1'b1) begin
-				if(counter == 3'd250) begin
-					counter <= 3'd250;	// make a limit of counter
+				if(counter == 8'd250) begin
+					counter <= 8'd250;	// make a limit of counter
 				end
 				else begin
 					counter <= counter + 8'b1;

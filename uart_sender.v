@@ -90,7 +90,7 @@ begin
 		end
 		`SHIFT_ST:
 		begin
-			if(shift_count == 1'd10) begin	// means has shifted 8 bits out
+			if(shift_count == 4'd10) begin	// means has shifted 8 bits out
 				next_st = `CLEAR_ST;
 			end
 			else begin

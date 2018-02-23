@@ -24,15 +24,15 @@ begin
 	end
 	else begin
 		if(start == 1'b1) begin 		// means it is a start of frame
-			data_out = 2'hff;
+			data_out = 8'hff;
 		end
 		else begin
-			if(data_in < 2'd20) begin	// means data is switcher
+			if(data_in < 8'd20) begin	// means data is switcher
 				if(sig_in == 1'b1) begin
-					data_out = 2'd1;	// means siwtcher ON
+					data_out = 8'd1;	// means siwtcher ON
 				end
 				else begin
-					data_out = 2'd2;	// means siwtcher OFF
+					data_out = 8'd2;	// means siwtcher OFF
 				end
 			end
 			else begin
