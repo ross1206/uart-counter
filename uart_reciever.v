@@ -30,14 +30,14 @@ reg [7:0] shift_data;
 always @ (posedge clk_in or negedge reset)
 begin
 	if(reset == 1'b0) begin
-		shift_count <= 3'b0;
+		shift_count <= 4'b0;
 		shift_data <= 8'b0;
 	end
 	else begin
 		case (current_st)
 			`UR_IDLE_ST:
 			begin
-				shift_count <= 3'b0;
+				shift_count <= 4'b0;
 				shift_data <= 8'b0;
 			end	
 			
@@ -75,7 +75,7 @@ begin
 		
 		`UR_SHIFT_ST:
 		begin
-			if(shift_count == 4'd8) begin
+			if(shift_count == 4'd7) begin
 				next_st = `UR_LOCK_ST;
 			end
 			else begin
