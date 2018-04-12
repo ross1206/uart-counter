@@ -21,3 +21,14 @@ set_location_assignment PIN_L15		-to uart_out
 set_location_assignment PIN_K15		-to uart_data_in
 
 
+
+# in this case I set sw-out as LEDs in demo-board 
+set_location_assignment PIN_J1		-to sw_out[0]
+set_location_assignment PIN_J2		-to sw_out[1]
+set_location_assignment PIN_K1		-to sw_out[2]
+set_location_assignment PIN_K2		-to sw_out[3]
+
+
+
+
+
