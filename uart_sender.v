@@ -5,8 +5,8 @@
 
 `define US_IDLE_ST		3'b000
 `define US_LOCK_ST		3'b001
-`define US_SHIFT_ST	3'b010
-`define US_CLEAR_ST	3'b011
+`define US_SHIFT_ST		3'b010
+`define US_CLEAR_ST		3'b011
 
 
 
