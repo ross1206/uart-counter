@@ -17,36 +17,6 @@ module select8
 
 
 reg [3:0] addr;
-reg q1, q2;
-reg res;
-
-
-
-
-
-always @(posedge clk_in or negedge reset)
-begin
-	if(reset == 1'b0) begin
-		q1 <= 1'b0;
-		q2 <= 1'b0;
-	end
-	else begin
-		q1 <= time_025;
-		q2 <= q1;
-	end
-end
-
-
-
-always @(*)
-begin
-	res <= q1 & (~q2);
-end
-
-
-
-
-
 
 
 always @(posedge clk_in or negedge reset)
@@ -55,7 +25,7 @@ begin
 		addr <= 4'd0;
 	end
 	else begin
-		if(res == 1'b1) begin
+		if(time_025 == 1'b1) begin
 			if(addr == 4'd8)	begin
 				addr <= 4'd0;
 			end
