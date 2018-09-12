@@ -37,7 +37,7 @@ end
 
 always @(*)
 begin
-	res <= q1 ^ q2;
+	res <= q1 & (~q2);
 end
 
 
