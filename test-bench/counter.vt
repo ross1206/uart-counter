@@ -1,0 +1,99 @@
+// Copyright (C) 1991-2011 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "09/11/2018 19:45:10"
+                                                                                
+// Verilog Test Bench template for design : counter
+// 
+// Simulation tool : ModelSim (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module counter_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg clk_in;
+reg reset;
+reg sig_in;
+reg tim025;
+// wires                                               
+wire [7:0]  data_out;
+
+// assign statements (if any)                          
+counter i1 (
+// port map - connection between master ports and signals/registers   
+	.clk_in(clk_in),
+	.data_out(data_out),
+	.reset(reset),
+	.sig_in(sig_in),
+	.tim025(tim025)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin  
+	reset = 0;
+	tim025 = 0;
+	clk_in = 0;
+	
+	
+	#5 reset = 1;
+	
+	#5000 $stop;
+                                                       
+// --> end                                             
+$display("Running testbench");                       
+end                                                    
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin  
+
+	forever #2 clk_in = ~clk_in;
+                                                       
+@eachvec;                                              
+// --> end                                             
+end   
+
+always
+begin
+	forever
+	begin
+		#100 tim025 = 1;
+		#4  tim025 = 0;
+	end  
+end 
+
+always
+begin
+	forever
+	begin
+		#10 sig_in = 1;
+		#8  sig_in = 0;
+		#5 sig_in = 1;
+		#7 sig_in = 0;
+	end  
+end 
+                                                 
+endmodule
+
